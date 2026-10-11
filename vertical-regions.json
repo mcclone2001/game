@@ -1,0 +1,159 @@
+{
+  "regions": [
+    {
+      "id": "player-region",
+      "name": "Region del jugador",
+      "initialOwner": "player",
+      "connections": ["neutral-region"],
+      "population": {
+        "max": 3
+      },
+      "naturalResourcesMax": {
+        "oil_fields": 3,
+        "arable_land": 3,
+        "precious_minerals": 3,
+        "metallic_minerals": 3,
+        "radioactive_minerals": 3,
+        "rivers_lakes": 3
+      },
+      "happiness": null,
+      "infrastructureCapacity": {
+        "totalMaxLevel": 20,
+        "maxByType": {
+          "road": 3,
+          "military_base": 1
+        }
+      },
+      "builtInfrastructure": {
+        "road": 1,
+        "military_base": 1
+      }
+    },
+    {
+      "id": "neutral-region",
+      "name": "Region neutral",
+      "initialOwner": "neutral",
+      "connections": ["player-region", "enemy-region"],
+      "population": {
+        "max": 3
+      },
+      "naturalResourcesMax": {
+        "oil_fields": 3,
+        "arable_land": 3,
+        "precious_minerals": 3,
+        "metallic_minerals": 3,
+        "radioactive_minerals": 3,
+        "rivers_lakes": 3
+      },
+      "happiness": null,
+      "infrastructureCapacity": {
+        "totalMaxLevel": 20,
+        "maxByType": {
+          "road": 3,
+          "airport": 1,
+          "port": 1,
+          "shipyard": 1,
+          "railway": 1,
+          "factory": 1,
+          "dam": 1,
+          "power_grid": 1,
+          "power_plant": 1,
+          "refinery": 1,
+          "oil_well": 1,
+          "pipeline": 1,
+          "mine": 1,
+          "foundry": 1,
+          "warehouse": 1,
+          "workshop": 1,
+          "nuclear_reactor": 1,
+          "research_center": 1,
+          "farm": 1,
+          "hospital": 1,
+          "education_center": 1,
+          "military_base": 1,
+          "anti_air_battery": 1,
+          "artillery_battery": 1,
+          "psyops": 1,
+          "radar": 1,
+          "electronic_warfare_station": 1,
+          "missile_silo": 1,
+          "space_command_center": 1,
+          "space_launcher": 1,
+          "satcom": 1,
+          "intelligence_office": 1,
+          "police": 1,
+          "fire_rescue": 1
+        }
+      },
+      "builtInfrastructure": {
+        "road": 1,
+        "airport": 1,
+        "port": 1,
+        "shipyard": 1,
+        "railway": 1,
+        "factory": 1,
+        "dam": 1,
+        "power_grid": 1,
+        "power_plant": 1,
+        "refinery": 1,
+        "oil_well": 1,
+        "pipeline": 1,
+        "mine": 1,
+        "foundry": 1,
+        "warehouse": 1,
+        "workshop": 1,
+        "nuclear_reactor": 1,
+        "research_center": 1,
+        "farm": 1,
+        "hospital": 1,
+        "education_center": 1,
+        "military_base": 1,
+        "anti_air_battery": 1,
+        "artillery_battery": 1,
+        "psyops": 1,
+        "radar": 1,
+        "electronic_warfare_station": 1,
+        "missile_silo": 1,
+        "space_command_center": 1,
+        "space_launcher": 1,
+        "satcom": 1,
+        "intelligence_office": 1,
+        "police": 1,
+        "fire_rescue": 1
+      },
+      "notes": [
+        "La infraestructura inicial de la region neutral es preexistente.",
+        "Puede superar totalMaxLevel porque totalMaxLevel limita construccion y mejoras futuras, no el estado inicial heredado."
+      ]
+    },
+    {
+      "id": "enemy-region",
+      "name": "Region enemiga",
+      "initialOwner": "enemy",
+      "connections": ["neutral-region"],
+      "population": {
+        "max": 3
+      },
+      "naturalResourcesMax": {
+        "oil_fields": 3,
+        "arable_land": 3,
+        "precious_minerals": 3,
+        "metallic_minerals": 3,
+        "radioactive_minerals": 3,
+        "rivers_lakes": 3
+      },
+      "happiness": null,
+      "infrastructureCapacity": {
+        "totalMaxLevel": 20,
+        "maxByType": {
+          "road": 3,
+          "military_base": 1
+        }
+      },
+      "builtInfrastructure": {
+        "road": 1,
+        "military_base": 1
+      }
+    }
+  ]
+}

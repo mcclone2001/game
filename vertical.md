@@ -14,8 +14,19 @@ El vertical slice no busca cubrir todo el juego. Debe validar las decisiones tec
 - Mapa estrategico del vertical slice: 3 regiones.
 - Regiones iniciales: 1 del jugador, 1 neutral y 1 del enemigo.
 - Conexion de regiones: linea jugador -> neutral -> enemigo.
+- Capacidad maxima de poblacion del vertical slice: 3 por region.
+- Recursos naturales maximos del vertical slice: 3 por cada tipo en cada region.
+- JSON base de regiones del vertical slice: `vertical-regions.json`.
 - Primera batalla: region neutral.
 - Infraestructura clave de la region neutral: aeropuerto.
+- Capacidad de infraestructura del vertical slice:
+  - las 3 regiones permiten caminos hasta nivel 3,
+  - la region intermedia permite nivel 1 de todos los tipos de infraestructura.
+- `totalMaxLevel` de cada region del vertical slice: 20.
+- Infraestructura inicial construida del vertical slice:
+  - region del jugador: `road` nivel 1 y `military_base` nivel 1,
+  - region enemiga: `road` nivel 1 y `military_base` nivel 1,
+  - region neutral: nivel 1 en toda infraestructura permitida.
 - Pantalla de organizacion de grupos.
 - Una batalla iniciada desde una region de campana.
 - Mapa de batalla: 128x128 tiles.
@@ -55,6 +66,11 @@ El vertical slice no busca cubrir todo el juego. Debe validar las decisiones tec
 - Cuenta online.
 - Mundo estrategico online/persistente.
 - Editor completo de mapas.
+- Tipos de unidades construibles por fabricas.
+- Arbol tecnologico detallado.
+- Formula y efectos de felicidad regional.
+- Balance completo de infraestructura por region.
+- Reglas completas para ataques especiales por eventos narrativos.
 
 ## Stack tecnico
 
@@ -100,6 +116,24 @@ packages/
 - `TechnologyState`
 - `StrategicResource`
 - `MissionDefinition`
+
+Cada `Region` debe soportar:
+
+- capacidad maxima de poblacion,
+- numero maximo de recursos naturales por tipo,
+- felicidad regional pendiente de definir.
+
+Tipos iniciales de recursos naturales:
+
+- yacimientos petroleros,
+- superficie agricola util,
+- minerales preciosos,
+- minerales metalicos,
+- minerales radiactivos,
+- rios y lagos.
+
+Para el vertical slice, cada una de las 3 regiones tiene capacidad maxima de poblacion 3.
+Para el vertical slice, cada una de las 3 regiones tiene maximo 3 en cada tipo de recurso natural. El JSON base completo de las 3 regiones vive en `vertical-regions.json`.
 
 ### Batalla
 
@@ -269,6 +303,24 @@ Debe enfocarse en:
 - Desplazar tropas entre regiones sin infraestructura tarda 5 slots estrategicos.
 - Si hay caminos en una zona del traslado, el costo se reduce 1 slot.
 - Si hay caminos en ambas zonas del traslado, el costo se reduce 2 slots.
+- Los caminos son infraestructura construible durante la fase estrategica.
+- La construccion de caminos esta limitada por region y por conexion entre regiones.
+- Dos regiones pueden ser adyacentes y aun asi no permitir construir camino entre ellas.
+- Cada region define una lista de infraestructuras construibles y el maximo por tipo.
+- Cada region tiene un maximo total de niveles de infraestructura.
+- La suma de niveles de infraestructura de la region no puede superar ese maximo total.
+- La capacidad de infraestructura de cada region se declara en JSON con maximo total y maximos por tipo.
+- Los tipos de infraestructura y sus codigos JSON estan definidos en `infrastructure.md`.
+- Ejemplo: una region puede permitir caminos nivel maximo 5 y aeropuerto nivel maximo 5, pero si su maximo total es 7 no puede tener ambos en nivel 5.
+- Para el vertical slice, todas las regiones permiten `road` hasta nivel 3.
+- Para el vertical slice, la region intermedia permite nivel 1 de todos los tipos de infraestructura.
+- Para el vertical slice, cada region tiene `totalMaxLevel` 20.
+- Para el vertical slice, la region del jugador inicia con `road` nivel 1 y `military_base` nivel 1.
+- Para el vertical slice, la region enemiga inicia con `road` nivel 1 y `military_base` nivel 1.
+- Para el vertical slice, la region neutral inicia con nivel 1 en toda infraestructura permitida.
+- La infraestructura inicial de la region neutral se considera preexistente; puede superar `totalMaxLevel` porque `totalMaxLevel` limita construccion y mejoras futuras, no el estado inicial heredado.
+- Las bases militares permiten entrenar infanteria.
+- Si una region tiene fabricas, puede construir otros tipos de unidades.
 - Si hay puente aereo, con aeropuerto en zona de origen y destino, el costo se reduce 4 slots por cada zona que se cruce.
 - El costo minimo despues de reducciones siempre es 1 slot estrategico.
 - Los tipos de terreno iniciales se documentan en `terreno.md`.
@@ -291,4 +343,4 @@ Debe enfocarse en:
 
 ## Preguntas abiertas
 
-1. Que infraestructura clave tendra la region neutral?
+1. Cual sera el siguiente dato base del vertical slice?

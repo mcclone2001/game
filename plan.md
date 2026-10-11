@@ -64,15 +64,38 @@ Construir un juego de estrategia en tiempo real top-down, inicialmente single-pl
 - Primera pantalla a implementar: mapa estrategico.
 - Mapa estrategico del vertical slice: 3 regiones, una del jugador, una neutral y una del enemigo.
 - Conexion del mapa estrategico vertical slice: linea jugador -> neutral -> enemigo.
+- Capacidad maxima de poblacion del vertical slice: 3 por region.
+- Recursos naturales maximos del vertical slice: 3 por cada tipo en cada region.
+- JSON base de regiones del vertical slice: `vertical-regions.json`.
 - Primera batalla del vertical slice: region neutral.
 - Infraestructura clave de la region neutral: aeropuerto.
 - Aeropuerto: permite desplazar tropas rapidamente entre dos zonas.
 - Movimiento estrategico base entre regiones sin infraestructura: 5 slots.
 - Caminos: reducen 1 slot si existen en una zona, 2 slots si existen en ambas.
+- Caminos: infraestructura construible durante la fase estrategica.
+- Construccion estrategica: limitada por region y por conexion entre regiones.
+- Regla de adyacencia: dos regiones pueden ser adyacentes y aun asi no permitir construir camino entre ellas.
+- Infraestructura construible: cada region define una lista de tipos permitidos y maximo por tipo.
+- Capacidad regional: cada region tiene un maximo total de niveles de infraestructura.
+- Restriccion de capacidad: la suma de niveles de infraestructura no puede superar el maximo total regional.
+- Formato de capacidad de infraestructura por region: JSON con maximo total y maximos por tipo.
+- Tipos de infraestructura y codigos JSON: definidos en `infrastructure.md`.
+- Capacidad vertical slice: las 3 regiones permiten `road` hasta nivel 3.
+- Capacidad vertical slice: la region intermedia permite nivel 1 de todos los tipos de infraestructura.
+- Capacidad vertical slice: cada region tiene `totalMaxLevel` 20.
+- Infraestructura inicial vertical slice: jugador y enemigo tienen `road` nivel 1 y `military_base` nivel 1.
+- Infraestructura inicial vertical slice: la region neutral tiene nivel 1 en toda infraestructura permitida.
+- Infraestructura inicial neutral: preexistente; puede superar `totalMaxLevel` porque `totalMaxLevel` limita construccion y mejoras futuras.
+- Base militar: permite entrenar infanteria.
+- Fabricas: permiten construir otros tipos de unidades.
 - Puente aereo: aeropuerto en origen y destino, reduce 4 slots por cada zona que se cruce.
 - Movimiento estrategico minimo despues de reducciones: 1 slot.
 - Persistencia de campana: zonas, infraestructura, tecnologias, grupos/unidades, dano/bajas, recursos estrategicos y estado narrativo.
 - Mapa estrategico: regiones conectadas.
+- Regiones: tienen capacidad maxima de poblacion.
+- Regiones: tienen numero maximo de recursos naturales por tipo.
+- Recursos naturales: yacimientos petroleros, superficie agricola util, minerales preciosos, minerales metalicos, minerales radiactivos, rios y lagos.
+- Felicidad regional: se definira despues.
 - Ataques estrategicos: regiones adyacentes, regiones remotas por airdrops si la ruta evita antiaereos o aceptando dano, y ataques especiales por eventos narrativos.
 - Medidas antiaereas estrategicas: no bloquean airdrops; aplican probabilidad de perdidas y probabilidad de dano.
 - Transportes airdrop: distintos tipos con capacidad por tipo de unidad; cada unidad consume capacidad segun su tamano.
@@ -193,6 +216,16 @@ La regla principal es mantener la logica del juego fuera de Phaser. Phaser debe 
 
 - El mapa estrategico de campana estara dividido en regiones conectadas.
 - Cada region puede contener infraestructura, beneficios, riesgos, misiones, estado de control y conexiones hacia otras regiones.
+- Cada region tiene capacidad maxima de poblacion.
+- Cada region tiene numero maximo de recursos naturales por tipo.
+- Los recursos naturales iniciales son:
+  - yacimientos petroleros,
+  - superficie agricola util,
+  - minerales preciosos,
+  - minerales metalicos,
+  - minerales radiactivos,
+  - rios y lagos.
+- La felicidad existe como propiedad regional, pero su formula y efectos se definiran despues.
 - Las conexiones entre regiones deben influir en avance, defensa, rutas logisticas, ataques y entrada de nuevos atacantes.
 - Controlar una region puede otorgar beneficios economicos, tecnologicos, logisticos, narrativos o militares.
 - Desde el mapa estrategico, el jugador debe poder seleccionar zonas y entrar a batallas relacionadas.
@@ -499,11 +532,32 @@ La planificacion tecnica detallada del vertical slice vive en `vertical.md`.
 
 ## Puntos pendientes por cerrar
 
-- Definicion de caminos en el mapa estrategico.
+- Siguiente dato base del vertical slice.
 
 ## Preguntas abiertas
 
-1. Como se define si una region tiene caminos?
+1. Cual sera el siguiente dato base del vertical slice?
+
+## Para despues
+
+- Tipos de unidades construibles por fabricas.
+- Arbol tecnologico detallado.
+- Formula y efectos de felicidad regional.
+- Unidades maritimas.
+- Unidades anfibias.
+- Airdrops reales de campana.
+- Android y iOS.
+- Multiplayer asincrono por slots.
+- Cooperativo contra IA.
+- Niebla de guerra tactica.
+- IA adaptativa completa.
+- Mundo estrategico online/persistente.
+- Monetizacion free-to-play con cosmeticos.
+- Cuenta online, tienda, eventos y sincronizacion.
+- Editor completo de mapas.
+- Reglas detalladas de sabotaje si alguna vez se permite.
+- Balance completo de infraestructura por region.
+- Reglas completas para ataques especiales por eventos narrativos.
 
 ## Direccion creativa
 
