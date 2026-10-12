@@ -2,7 +2,7 @@
   "regions": [
     {
       "id": "player-region",
-      "name": "Region del jugador",
+      "name": "Base Oeste",
       "initialOwner": "player",
       "connections": ["neutral-region"],
       "population": {
@@ -31,7 +31,7 @@
     },
     {
       "id": "neutral-region",
-      "name": "Region neutral",
+      "name": "Aeropuerto Central",
       "initialOwner": "neutral",
       "connections": ["player-region", "enemy-region"],
       "population": {
@@ -50,7 +50,7 @@
         "totalMaxLevel": 20,
         "maxByType": {
           "road": 3,
-          "airport": 1,
+          "airport": 5,
           "port": 1,
           "shipyard": 1,
           "railway": 1,
@@ -87,7 +87,7 @@
       },
       "builtInfrastructure": {
         "road": 1,
-        "airport": 1,
+        "airport": 5,
         "port": 1,
         "shipyard": 1,
         "railway": 1,
@@ -128,7 +128,7 @@
     },
     {
       "id": "enemy-region",
-      "name": "Region enemiga",
+      "name": "Bastion Este",
       "initialOwner": "enemy",
       "connections": ["neutral-region"],
       "population": {

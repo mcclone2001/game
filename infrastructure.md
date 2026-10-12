@@ -11,6 +11,8 @@ Este documento lista la infraestructura del juego y sus detalles de diseno. La i
 - La construccion estrategica esta limitada por region y por conexion entre regiones.
 - Que dos regiones sean adyacentes no implica que todas las infraestructuras puedan construirse entre ellas.
 - Puede haber dos regiones adyacentes entre las que no se pueda construir camino u otra conexion logistica.
+- Las reglas de captura y combate interno aplican a cualquier infraestructura capturable.
+- Los caminos (`road`) no son capturables.
 - Cada region define una lista de infraestructuras construibles.
 - Cada tipo de infraestructura construible tiene un nivel maximo permitido por region.
 - Cada region tambien tiene un maximo total de niveles de infraestructura.
@@ -51,7 +53,7 @@ Este modelo fuerza decisiones estrategicas por region y evita que todas las regi
 
 Para el vertical slice, las 3 regiones permiten caminos (`road`) hasta nivel 3. La region intermedia permite nivel 1 de todos los tipos de infraestructura. Cada region del vertical slice tiene `totalMaxLevel` 20.
 
-La region del jugador y la region enemiga inician con camino (`road`) nivel 1 y base militar (`military_base`) nivel 1. La region neutral inicia con nivel 1 en toda infraestructura permitida.
+La region del jugador y la region enemiga inician con camino (`road`) nivel 1 y base militar (`military_base`) nivel 1. La region neutral inicia con nivel 1 en toda infraestructura permitida, excepto aeropuerto (`airport`) nivel 5.
 
 Ejemplo parcial del vertical slice:
 
@@ -76,7 +78,7 @@ Ejemplo parcial del vertical slice:
       "totalMaxLevel": 20,
       "maxByType": {
         "road": 3,
-        "airport": 1,
+        "airport": 5,
         "port": 1,
         "shipyard": 1,
         "railway": 1,
@@ -113,7 +115,7 @@ Ejemplo parcial del vertical slice:
     },
     "builtInfrastructure": {
       "road": 1,
-      "airport": 1,
+      "airport": 5,
       "port": 1,
       "shipyard": 1,
       "railway": 1,
@@ -264,6 +266,7 @@ Infraestructura estrategica construible durante la fase estrategica. Reduce el t
 Detalles iniciales:
 
 - Construccion: fase estrategica.
+- Captura: no capturable.
 - Disponibilidad: limitada por region y por conexion entre regiones.
 - Restriccion clave: dos regiones pueden ser adyacentes y aun asi no permitir construccion de camino entre ellas.
 - Beneficio estrategico: reduce el costo de movimiento estrategico.
@@ -350,6 +353,8 @@ Infraestructura logistica y aerea. Permite desplazar tropas rapidamente entre do
 Detalles iniciales:
 
 - Captura: requiere infanteria dentro.
+- Nivel vertical slice: 5.
+- Captura vertical slice: usa las reglas generales de captura de infraestructura.
 - Slots de captura sugeridos: 8.
 - Beneficio estrategico: permite desplazar tropas rapidamente entre dos zonas.
 - Efecto estrategico sugerido: habilita rutas rapidas de traslado entre regiones conectadas o regiones compatibles.

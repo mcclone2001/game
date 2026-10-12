@@ -64,15 +64,28 @@ Construir un juego de estrategia en tiempo real top-down, inicialmente single-pl
 - Primera pantalla a implementar: mapa estrategico.
 - Mapa estrategico del vertical slice: 3 regiones, una del jugador, una neutral y una del enemigo.
 - Conexion del mapa estrategico vertical slice: linea jugador -> neutral -> enemigo.
+- Layout vertical slice: 3 nodos en linea.
+- Nombres de regiones vertical slice: Base Oeste, Aeropuerto Central y Bastion Este.
 - Capacidad maxima de poblacion del vertical slice: 3 por region.
 - Recursos naturales maximos del vertical slice: 3 por cada tipo en cada region.
 - JSON base de regiones del vertical slice: `vertical-regions.json`.
 - Primera batalla del vertical slice: region neutral.
 - Infraestructura clave de la region neutral: aeropuerto.
+- Captura de infraestructura: aplica a cualquier infraestructura capturable.
+- Captura de infraestructura: `road` no es capturable.
+- Captura de infraestructura: el aeropuerto inicia en nivel 5.
+- Captura de infraestructura: 1 slot y 2 infanterias comprometidas por nivel de infraestructura.
+- Captura de infraestructura: maximo de tropas dentro por bando igual al nivel actual de infraestructura.
+- Captura de infraestructura: se pausa si el enemigo tiene el mismo numero de infanteria dentro.
+- Captura de infraestructura: por cada slot y por cada nivel actual se selecciona una unidad aleatoria de cada bando dentro para intercambiar dano.
+- Captura de infraestructura: infanteria regular causa 1 de dano y tiene 10 de salud.
+- Captura de infraestructura: unidades dentro se dañan mutuamente y cada 5 slots de lucha interna reducen 1 nivel de infraestructura.
+- Captura de infraestructura: si el nivel cae por debajo del numero de tropas de un bando dentro, se expulsa una tropa aleatoria de ese bando.
 - Aeropuerto: permite desplazar tropas rapidamente entre dos zonas.
 - Movimiento estrategico base entre regiones sin infraestructura: 5 slots.
 - Caminos: reducen 1 slot si existen en una zona, 2 slots si existen en ambas.
 - Caminos: infraestructura construible durante la fase estrategica.
+- Caminos: no son capturables.
 - Construccion estrategica: limitada por region y por conexion entre regiones.
 - Regla de adyacencia: dos regiones pueden ser adyacentes y aun asi no permitir construir camino entre ellas.
 - Infraestructura construible: cada region define una lista de tipos permitidos y maximo por tipo.
@@ -84,7 +97,7 @@ Construir un juego de estrategia en tiempo real top-down, inicialmente single-pl
 - Capacidad vertical slice: la region intermedia permite nivel 1 de todos los tipos de infraestructura.
 - Capacidad vertical slice: cada region tiene `totalMaxLevel` 20.
 - Infraestructura inicial vertical slice: jugador y enemigo tienen `road` nivel 1 y `military_base` nivel 1.
-- Infraestructura inicial vertical slice: la region neutral tiene nivel 1 en toda infraestructura permitida.
+- Infraestructura inicial vertical slice: la region neutral tiene nivel 1 en toda infraestructura permitida, excepto `airport` nivel 5.
 - Infraestructura inicial neutral: preexistente; puede superar `totalMaxLevel` porque `totalMaxLevel` limita construccion y mejoras futuras.
 - Base militar: permite entrenar infanteria.
 - Fabricas: permiten construir otros tipos de unidades.
@@ -102,6 +115,8 @@ Construir un juego de estrategia en tiempo real top-down, inicialmente single-pl
 - Tipo inicial de transporte: transporte mixto.
 - Capacidades del transporte mixto: infanteria 100, vehiculos 5, aereos ligeros/drones 10, estructuras/despliegues tacticos 3.
 - Unidades MVP: infanteria basica, mortero pequeno, vehiculo ligero, tanque, drone reconocimiento y drone ataque.
+- Grupos iniciales vertical slice: 10 infanterias en 2 grupos iguales.
+- Grupos iniciales enemigos vertical slice: igual que el jugador, 10 infanterias en 2 grupos iguales.
 - Escala objetivo: 1000+ unidades simultaneas.
 - Plataformas objetivo:
   - PC en navegador.

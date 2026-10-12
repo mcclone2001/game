@@ -14,11 +14,26 @@ El vertical slice no busca cubrir todo el juego. Debe validar las decisiones tec
 - Mapa estrategico del vertical slice: 3 regiones.
 - Regiones iniciales: 1 del jugador, 1 neutral y 1 del enemigo.
 - Conexion de regiones: linea jugador -> neutral -> enemigo.
+- Layout del mapa estrategico: 3 nodos en linea.
+- Nombres de regiones: Base Oeste, Aeropuerto Central y Bastion Este.
 - Capacidad maxima de poblacion del vertical slice: 3 por region.
 - Recursos naturales maximos del vertical slice: 3 por cada tipo en cada region.
 - JSON base de regiones del vertical slice: `vertical-regions.json`.
 - Primera batalla: region neutral.
 - Infraestructura clave de la region neutral: aeropuerto.
+- Captura de infraestructura:
+  - el aeropuerto inicia en nivel 5,
+  - aplica a cualquier infraestructura capturable,
+  - `road` no es capturable,
+  - requiere 1 slot por nivel de infraestructura,
+  - requiere 2 infanterias comprometidas por nivel de infraestructura,
+  - el numero maximo de tropas dentro por bando es igual al nivel actual de infraestructura,
+  - se pausa si el enemigo tiene el mismo numero de infanteria dentro,
+  - si hay infanteria enemiga disputando la captura, ambos bandos se hacen dano,
+  - por cada slot y por cada nivel actual de infraestructura se selecciona una unidad aleatoria de cada bando dentro para intercambiar dano,
+  - la infanteria regular causa 1 de dano y tiene 10 de salud,
+  - por cada 5 slots con unidades luchando dentro, el aeropuerto pierde 1 nivel de infraestructura,
+  - si el nivel cae por debajo del numero de tropas de un bando dentro, se expulsa una tropa aleatoria de ese bando.
 - Capacidad de infraestructura del vertical slice:
   - las 3 regiones permiten caminos hasta nivel 3,
   - la region intermedia permite nivel 1 de todos los tipos de infraestructura.
@@ -28,6 +43,7 @@ El vertical slice no busca cubrir todo el juego. Debe validar las decisiones tec
   - region enemiga: `road` nivel 1 y `military_base` nivel 1,
   - region neutral: nivel 1 en toda infraestructura permitida.
 - Pantalla de organizacion de grupos.
+- Grupos iniciales: jugador y enemigo tienen 10 infanterias distribuidas en 2 grupos iguales.
 - Una batalla iniciada desde una region de campana.
 - Mapa de batalla: 128x128 tiles.
 - Coordenadas: simulacion en tiles logicos y render independiente.
@@ -179,6 +195,11 @@ El detalle de infraestructura vive en `infrastructure.md`.
 
 ## Unidades iniciales
 
+- Grupos iniciales del jugador y enemigo en el vertical slice:
+  - 10 infanterias,
+  - 2 grupos,
+  - 5 infanterias por grupo.
+
 - Infanteria basica:
   - tamano: 1,
   - capacidad usada: infanteria.
@@ -250,6 +271,32 @@ Debe enfocarse en:
 - reconocimiento,
 - apoyo tactico.
 
+## Mapa estrategico del vertical slice
+
+- El mapa estrategico muestra 3 nodos en linea:
+  - Base Oeste: region inicial del jugador.
+  - Aeropuerto Central: region neutral e infraestructura clave del vertical slice.
+  - Bastion Este: region inicial del enemigo.
+- Al seleccionar una region, la UI debe mostrar la infraestructura existente.
+- La region neutral muestra el aeropuerto y el resto de infraestructura preexistente definida en `vertical-regions.json`.
+- La primera batalla se inicia desde el nodo Aeropuerto Central.
+
+## Captura y combate de infraestructura
+
+- Estas reglas aplican a cualquier infraestructura capturable.
+- `road` no es capturable.
+- En el vertical slice, el aeropuerto inicia en nivel 5.
+- La captura requiere 1 slot por cada nivel actual de infraestructura.
+- La captura requiere 2 infanterias comprometidas por cada nivel actual de infraestructura.
+- El numero maximo de tropas dentro de una infraestructura por bando es igual al nivel actual de infraestructura.
+- Si el enemigo tiene el mismo numero de infanteria dentro de la infraestructura, la captura se pausa.
+- Si hay infanteria de ambos bandos dentro de la infraestructura, se dañan mutuamente.
+- Por cada slot y por cada nivel actual de infraestructura se selecciona una unidad aleatoria de cada bando dentro de la infraestructura para intercambiar dano.
+- La infanteria regular causa 1 de dano y tiene 10 de salud.
+- Por cada 5 slots en que haya unidades luchando dentro de la infraestructura, la infraestructura pierde 1 nivel.
+- Si la infraestructura pierde niveles por combate interno, el requisito de slots e infanteria debe recalcularse con el nivel actual.
+- Si el nivel cae por debajo del numero de tropas de un bando dentro de la infraestructura, se expulsa una tropa aleatoria de ese bando.
+
 ## Backlog tecnico inicial
 
 1. Inicializar monorepo TypeScript/Vite.
@@ -288,10 +335,14 @@ Debe enfocarse en:
 - Se ve una campana minima con al menos 2 regiones conectadas.
 - El mapa estrategico tiene 3 regiones: una del jugador, una neutral y una del enemigo.
 - Las regiones estan conectadas en linea: jugador -> neutral -> enemigo.
+- Los nodos del mapa estrategico se llaman Base Oeste, Aeropuerto Central y Bastion Este.
+- Los 3 nodos se renderizan en linea.
+- Al seleccionar una region se muestran los datos de infraestructura existente.
 - La primera batalla del vertical slice ocurre por la region neutral.
 - Si el jugador gana, la region neutral pasa a control del jugador.
 - Se puede seleccionar una region y preparar una batalla.
 - Se puede reorganizar al menos un grupo antes de batalla.
+- El jugador inicia con 10 infanterias divididas en 2 grupos de 5.
 - La batalla usa un mapa de 128x128 tiles.
 - La simulacion usa tiles logicos desacoplados del render.
 - Cada tile logico tiene terreno, costo de movimiento, restriccion aerea, bloqueo de movimiento, modificador de vision y cobertura.
@@ -317,7 +368,7 @@ Debe enfocarse en:
 - Para el vertical slice, cada region tiene `totalMaxLevel` 20.
 - Para el vertical slice, la region del jugador inicia con `road` nivel 1 y `military_base` nivel 1.
 - Para el vertical slice, la region enemiga inicia con `road` nivel 1 y `military_base` nivel 1.
-- Para el vertical slice, la region neutral inicia con nivel 1 en toda infraestructura permitida.
+- Para el vertical slice, la region neutral inicia con nivel 1 en toda infraestructura permitida, excepto `airport` nivel 5.
 - La infraestructura inicial de la region neutral se considera preexistente; puede superar `totalMaxLevel` porque `totalMaxLevel` limita construccion y mejoras futuras, no el estado inicial heredado.
 - Las bases militares permiten entrenar infanteria.
 - Si una region tiene fabricas, puede construir otros tipos de unidades.
@@ -333,8 +384,17 @@ Debe enfocarse en:
 - El cliente muestra animacion continua del resultado.
 - Existe dano de combate.
 - Existe dano de terreno.
-- La infraestructura solo puede controlarse con infanteria.
+- La infraestructura capturable solo puede controlarse con infanteria.
+- `road` no es capturable.
 - La infraestructura clave del vertical slice es un aeropuerto.
+- El aeropuerto del vertical slice inicia en nivel 5.
+- Cualquier infraestructura capturable se captura con 1 slot y 2 infanterias comprometidas por nivel de infraestructura.
+- El numero maximo de tropas dentro de una infraestructura por bando es igual al nivel actual de infraestructura.
+- La captura se pausa si el enemigo tiene el mismo numero de infanteria dentro.
+- La infanteria de ambos bandos se dana mutuamente cuando disputa infraestructura desde dentro: por cada slot y por cada nivel actual de infraestructura se selecciona una unidad aleatoria de cada bando para intercambiar dano.
+- La infanteria regular causa 1 de dano y tiene 10 de salud.
+- La infraestructura pierde 1 nivel por cada 5 slots de lucha interna.
+- Si el nivel de la infraestructura cae por debajo del numero de tropas de un bando dentro, se expulsa una tropa aleatoria de ese bando.
 - La batalla termina al cumplir la condicion de control.
 - La batalla se pierde si el jugador se queda sin infanteria.
 - El resultado modifica la campana local.
